@@ -47,6 +47,10 @@
   }
   .vignette { position: fixed; inset: 0; z-index: -1; pointer-events: none;
     background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(0,0,5,.55)); }
+  .shot { position: fixed; z-index: -1; width: 150px; height: 2px; pointer-events: none;
+    background: linear-gradient(90deg, rgba(205,218,255,.95), rgba(205,218,255,0));
+    border-radius: 999px; opacity: 0; will-change: transform, opacity;
+    box-shadow: 0 0 8px rgba(180,200,255,.6); }
 
   /* ================= nav ================= */
   nav {
@@ -96,6 +100,7 @@
   /* ================= hero ================= */
   .hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: center;
           padding-top: 70px; }
+  .hero-parallax { will-change: transform, opacity; }
   .hero-float { animation: float 10s ease-in-out infinite; will-change: transform; }
   @keyframes float { 0%,100% { transform: translate3d(0,0,0); }
                      50% { transform: translate3d(0,-10px,0); } }
@@ -178,7 +183,8 @@
   .card .idx { position: absolute; top: 24px; right: 26px; font-family: var(--mono);
                font-size: 12px; color: rgba(148,163,255,.5); }
   .card h3 { font-size: 24px; letter-spacing: -.02em; font-weight: 720;
-             display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+             display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+             flex-wrap: wrap; }
   .card h3 .arrow { transition: transform .35s var(--ease); color: var(--cyan); font-size: 19px; }
   .card:hover h3 .arrow { transform: translate(5px,-5px); }
   .pill { font-family: var(--mono); font-size: 10.5px; padding: 4px 11px; border-radius: 999px;
@@ -258,6 +264,7 @@
 <canvas id="space" aria-hidden="true"></canvas>
 <div class="nebula" aria-hidden="true"></div>
 <div class="vignette" aria-hidden="true"></div>
+<div class="shot" id="shot" aria-hidden="true"></div>
 
 <nav id="nav">
   <a class="logo" href="#top">tarun<span>.builds</span></a>
@@ -277,21 +284,23 @@
       <div class="planet"></div>
       <div class="orbit"><div class="sat"></div></div>
     </div>
-    <div class="hero-float">
-      <p class="hello">$ whoami — Tarun Kumar Reddy Nallagari · Buffalo, NY<span class="cursor">▌</span></p>
-      <h1>I build <span class="grad">production AI</span> that actually ships.</h1>
-      <p class="sub">AI/ML Engineer at <strong>Ally Financial</strong> — LLM &amp; RAG systems, evaluation
-        pipelines, and MLOps in regulated industries. I care about the unglamorous parts:
-        <strong>evals, grounding, guardrails, latency, and cost</strong>.</p>
-      <div class="cta">
-        <a class="btn btn-primary magnetic" href="#work">See the work ↓</a>
-        <a class="btn btn-ghost magnetic" href="https://www.linkedin.com/in/tarun-kumar-reddy-nallagari-27b408218/" target="_blank" rel="noopener">LinkedIn</a>
-      </div>
-      <div class="ticker">
-        <span><span class="dot">●</span> p95 <b>&lt; 800 ms</b> @ 50K req/day</span>
-        <span><span class="dot">●</span> retrieval hit-rate <b>92%</b></span>
-        <span><span class="dot">●</span> LLM spend <b>−35%</b></span>
-        <span><span class="dot">●</span> <b>2 TB/day</b> pipelines</span>
+    <div class="hero-parallax" id="hero-parallax">
+      <div class="hero-float">
+        <p class="hello">$ whoami — Tarun Kumar Reddy Nallagari · Buffalo, NY<span class="cursor">▌</span></p>
+        <h1>I build <span class="grad">production AI</span> that actually ships.</h1>
+        <p class="sub">AI/ML Engineer at <strong>Ally Financial</strong> — LLM &amp; RAG systems, evaluation
+          pipelines, and MLOps in regulated industries. I care about the unglamorous parts:
+          <strong>evals, grounding, guardrails, latency, and cost</strong>.</p>
+        <div class="cta">
+          <a class="btn btn-primary magnetic" href="#work">See the work ↓</a>
+          <a class="btn btn-ghost magnetic" href="https://www.linkedin.com/in/tarun-kumar-reddy-nallagari-27b408218/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+        <div class="ticker">
+          <span><span class="dot">●</span> p95 <b>&lt; 800 ms</b> @ 50K req/day</span>
+          <span><span class="dot">●</span> retrieval hit-rate <b>92%</b></span>
+          <span><span class="dot">●</span> LLM spend <b>−35%</b></span>
+          <span><span class="dot">●</span> <b>2 TB/day</b> pipelines</span>
+        </div>
       </div>
     </div>
     <div class="scroll-hint" aria-hidden="true">↓</div>
@@ -416,114 +425,203 @@
 
 <footer>
   <div>© 2026 Tarun Kumar Reddy Nallagari · Buffalo, NY</div>
-  <div class="mono">zero frameworks · zero trackers · one HTML file · built for speed</div>
+  <div class="mono">zero frameworks · GPU-shader starfield · one HTML file · built for 120 Hz</div>
 </footer>
 
 <script>
 (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---------- starfield: floating-through-space canvas ---------- */
-  const canvas = document.getElementById('space');
-  const ctx = canvas.getContext('2d');
-  let W, H, dpr, stars = [], shooting = null, nextShot = 0;
-  const mouse = { x: .5, y: .5, sx: .5, sy: .5 };   // raw + smoothed
-  const STAR_COLORS = ['255,255,255', '196,204,255', '167,232,249'];
-
-  function resize() {
-    dpr = Math.min(devicePixelRatio || 1, 1.5);
-    W = canvas.width = Math.round(innerWidth * dpr);
-    H = canvas.height = Math.round(innerHeight * dpr);
-    canvas.style.width = innerWidth + 'px';
-    canvas.style.height = innerHeight + 'px';
-    const count = Math.min(240, Math.round(innerWidth * innerHeight / 6500));
-    stars = Array.from({ length: count }, () => ({
-      x: Math.random(), y: Math.random(),
-      z: .25 + Math.random() * .75,               // depth: far .25 → near 1
-      r: .4 + Math.random() * 1.5,
-      c: STAR_COLORS[Math.random() * 3 | 0],
-      tw: Math.random() * Math.PI * 2,            // twinkle phase
-      ts: .4 + Math.random() * 1.2,               // twinkle speed
-    }));
-  }
-  resize();
-  addEventListener('resize', resize);
+  const mouse = { x: .5, y: .5, sx: .5, sy: .5 };
   addEventListener('pointermove', e => {
     mouse.x = e.clientX / innerWidth; mouse.y = e.clientY / innerHeight;
   }, { passive: true });
 
-  function spawnShot(t) {
-    const fromLeft = Math.random() < .5;
-    shooting = {
-      x: fromLeft ? -.05 : .55 + Math.random() * .4,
-      y: Math.random() * .35,
-      vx: (fromLeft ? 1 : -1) * (.55 + Math.random() * .35),
-      vy: .28 + Math.random() * .2,
-      born: t, life: 1100 + Math.random() * 500,
+  /* ============ GPU starfield (WebGL point shader) ============ */
+  const canvas = document.getElementById('space');
+
+  const VS = `
+    attribute vec4 a_star;   // seedX, seedY, depth, size
+    attribute vec4 a_anim;   // twinklePhase, twinkleSpeed, colorMix, driftSpeed
+    uniform float u_time;
+    uniform float u_scroll;  // scrollY / viewport height
+    uniform vec2  u_mouse;   // smoothed, 0..1
+    uniform float u_dpr;
+    varying float v_alpha;
+    varying vec3  v_color;
+    void main() {
+      float depth = a_star.z;
+      float x = fract(a_star.x + u_time * 0.0045 * a_anim.w * depth
+                      + (0.5 - u_mouse.x) * 0.04 * depth);
+      float y = fract(a_star.y + (0.5 - u_mouse.y) * 0.04 * depth
+                      - u_scroll * 0.12 * depth);
+      gl_Position = vec4(x * 2.0 - 1.0, 1.0 - y * 2.0, 0.0, 1.0);
+      gl_PointSize = a_star.w * depth * u_dpr * 2.6;
+      v_alpha = (0.30 + 0.55 * abs(sin(a_anim.x + u_time * a_anim.y))) * depth;
+      vec3 white  = vec3(1.0, 1.0, 1.0);
+      vec3 indigo = vec3(0.77, 0.80, 1.0);
+      vec3 cyan   = vec3(0.65, 0.91, 0.98);
+      v_color = mix(mix(white, indigo, smoothstep(0.2, 0.5, a_anim.z)),
+                    cyan, smoothstep(0.6, 0.9, a_anim.z));
+    }`;
+  const FS = `
+    precision mediump float;
+    varying float v_alpha;
+    varying vec3  v_color;
+    void main() {
+      float r = length(gl_PointCoord - 0.5);
+      float a = smoothstep(0.5, 0.12, r) * v_alpha;
+      gl_FragColor = vec4(v_color * a, a);   // premultiplied for clean additive glow
+    }`;
+
+  function initStarfield() {
+    const gl = canvas.getContext('webgl', { alpha: true, antialias: false, depth: false,
+                                            powerPreference: 'high-performance' });
+    if (!gl) return null;
+
+    function compile(type, src) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+        throw new Error(gl.getShaderInfoLog(s));
+      return s;
+    }
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, VS));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FS));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS))
+      throw new Error(gl.getProgramInfoLog(prog));
+    gl.useProgram(prog);
+
+    const COUNT = Math.min(2400, Math.round(innerWidth * innerHeight / 900));
+    const data = new Float32Array(COUNT * 8);
+    for (let i = 0; i < COUNT; i++) {
+      const o = i * 8;
+      data[o]     = Math.random();                 // seedX
+      data[o + 1] = Math.random();                 // seedY
+      data[o + 2] = .22 + Math.random() * .78;     // depth
+      data[o + 3] = .5 + Math.random() * 1.7;      // size
+      data[o + 4] = Math.random() * Math.PI * 2;   // twinkle phase
+      data[o + 5] = .3 + Math.random() * 1.3;      // twinkle speed
+      data[o + 6] = Math.random();                 // color mix
+      data[o + 7] = .5 + Math.random() * .9;       // drift speed
+    }
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+    const aStar = gl.getAttribLocation(prog, 'a_star');
+    const aAnim = gl.getAttribLocation(prog, 'a_anim');
+    gl.enableVertexAttribArray(aStar);
+    gl.enableVertexAttribArray(aAnim);
+    gl.vertexAttribPointer(aStar, 4, gl.FLOAT, false, 32, 0);
+    gl.vertexAttribPointer(aAnim, 4, gl.FLOAT, false, 32, 16);
+
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);  // premultiplied alpha
+
+    const u = name => gl.getUniformLocation(prog, name);
+    const uTime = u('u_time'), uScroll = u('u_scroll'),
+          uMouse = u('u_mouse'), uDpr = u('u_dpr');
+
+    let dpr;
+    function resize() {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      canvas.width = Math.round(innerWidth * dpr);
+      canvas.height = Math.round(innerHeight * dpr);
+      canvas.style.width = innerWidth + 'px';
+      canvas.style.height = innerHeight + 'px';
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform1f(uDpr, dpr);
+    }
+    resize();
+    addEventListener('resize', resize);
+
+    return function draw(timeSec) {
+      mouse.sx += (mouse.x - mouse.sx) * .05;
+      mouse.sy += (mouse.y - mouse.sy) * .05;
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.uniform1f(uTime, timeSec);
+      gl.uniform1f(uScroll, scrollY / innerHeight);
+      gl.uniform2f(uMouse, mouse.sx, mouse.sy);
+      gl.drawArrays(gl.POINTS, 0, COUNT);
     };
-    nextShot = t + 5000 + Math.random() * 7000;
   }
 
-  let lastT = 0;
-  function frame(t) {
-    requestAnimationFrame(frame);
-    if (document.visibilityState === 'hidden') return;
-    const dt = Math.min(t - lastT, 50) / 1000; lastT = t;
-
-    // ease the parallax toward the cursor — the "floating" feel
-    mouse.sx += (mouse.x - mouse.sx) * .045;
-    mouse.sy += (mouse.y - mouse.sy) * .045;
-
-    ctx.clearRect(0, 0, W, H);
-    const scroll = scrollY, time = t / 1000;
-
-    for (const s of stars) {
-      // slow constant drift + depth parallax from scroll and cursor
-      const driftX = (s.x + time * .0035 * s.z) % 1;
-      const px = (driftX + (0.5 - mouse.sx) * .035 * s.z) * W;
-      let py = (s.y + (0.5 - mouse.sy) * .035 * s.z) * H - scroll * .12 * s.z * dpr;
-      py = ((py % H) + H) % H;
-      const alpha = (.35 + .5 * Math.abs(Math.sin(s.tw + time * s.ts))) * s.z;
-      ctx.beginPath();
-      ctx.arc(px, py, s.r * s.z * dpr, 0, 7);
-      ctx.fillStyle = `rgba(${s.c},${alpha.toFixed(3)})`;
-      ctx.fill();
-    }
-
-    // shooting star
-    if (!reduced) {
-      if (!shooting && t > nextShot) spawnShot(t);
-      if (shooting) {
-        const age = (t - shooting.born) / shooting.life;
-        if (age >= 1) shooting = null;
-        else {
-          const hx = (shooting.x + shooting.vx * age) * W;
-          const hy = (shooting.y + shooting.vy * age) * H;
-          const tail = 120 * dpr, fade = Math.sin(age * Math.PI);
-          const g = ctx.createLinearGradient(hx, hy,
-            hx - shooting.vx * tail, hy - shooting.vy * tail);
-          g.addColorStop(0, `rgba(200,215,255,${(.9 * fade).toFixed(3)})`);
-          g.addColorStop(1, 'rgba(200,215,255,0)');
-          ctx.strokeStyle = g; ctx.lineWidth = 1.6 * dpr; ctx.lineCap = 'round';
-          ctx.beginPath(); ctx.moveTo(hx, hy);
-          ctx.lineTo(hx - shooting.vx * tail, hy - shooting.vy * tail); ctx.stroke();
-        }
-      }
-    }
+  let draw = null;
+  try { draw = initStarfield(); } catch (e) { draw = null; }
+  if (draw && !reduced) {
+    (function loop(t) {
+      requestAnimationFrame(loop);
+      if (document.visibilityState !== 'hidden') draw(t / 1000);
+    })(0);
+  } else if (draw) {
+    draw(0); // reduced motion: one beautiful static sky
   }
-  if (reduced) { // static sky
-    for (const s of stars) {
-      ctx.beginPath();
-      ctx.arc(s.x * W, s.y * H, s.r * s.z * dpr, 0, 7);
-      ctx.fillStyle = `rgba(${s.c},${(.6 * s.z).toFixed(3)})`; ctx.fill();
-    }
-  } else requestAnimationFrame(frame);
 
-  /* ---------- nav ---------- */
+  /* ============ shooting stars (Web Animations API, off main thread) ============ */
+  const shot = document.getElementById('shot');
+  function shoot() {
+    if (reduced || document.visibilityState === 'hidden') return schedule();
+    const fromLeft = Math.random() < .5;
+    const x0 = fromLeft ? -160 : innerWidth * (.45 + Math.random() * .45);
+    const y0 = innerHeight * Math.random() * .35;
+    const dx = (fromLeft ? 1 : 1) * (innerWidth * .45 + Math.random() * 200);
+    const dy = innerHeight * (.22 + Math.random() * .18);
+    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+    shot.animate([
+      { transform: `translate(${x0}px, ${y0}px) rotate(${angle}deg)`, opacity: 0 },
+      { opacity: .95, offset: .18 },
+      { transform: `translate(${x0 + dx}px, ${y0 + dy}px) rotate(${angle}deg)`, opacity: 0 },
+    ], { duration: 1200 + Math.random() * 500, easing: 'cubic-bezier(.2,.4,.6,1)' });
+    schedule();
+  }
+  function schedule() { setTimeout(shoot, 5000 + Math.random() * 7000); }
+  schedule();
+
+  /* ============ inertial smooth scrolling (the glide) ============ */
+  if (!reduced && matchMedia('(pointer: fine)').matches) {
+    let target = scrollY, current = scrollY, raf = null;
+    const maxScroll = () => document.documentElement.scrollHeight - innerHeight;
+    addEventListener('wheel', e => {
+      if (e.ctrlKey) return;                      // let pinch-zoom through
+      e.preventDefault();
+      const dy = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+      target = Math.max(0, Math.min(maxScroll(), target + dy));
+      if (!raf) raf = requestAnimationFrame(glide);
+    }, { passive: false });
+    function glide() {
+      current += (target - current) * .12;
+      if (Math.abs(target - current) < .5) { current = target; raf = null; }
+      else raf = requestAnimationFrame(glide);
+      scrollTo({ top: current, behavior: 'instant' });
+    }
+    // stay in sync with keyboard / drag / anchor scrolling
+    addEventListener('scroll', () => {
+      if (!raf) { target = scrollY; current = scrollY; }
+    }, { passive: true });
+  }
+
+  /* ============ hero scroll-out parallax ============ */
+  const heroParallax = document.getElementById('hero-parallax');
+  if (!reduced && heroParallax) {
+    let ticking = false;
+    addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = Math.min(scrollY, innerHeight);
+        heroParallax.style.transform = `translate3d(0, ${(y * .28).toFixed(1)}px, 0)`;
+        heroParallax.style.opacity = Math.max(0, 1 - y / (innerHeight * .85)).toFixed(3);
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+
+  /* ============ nav ============ */
   const nav = document.getElementById('nav');
   addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 24), { passive: true });
 
-  /* ---------- staggered scroll reveals ---------- */
+  /* ============ staggered scroll reveals ============ */
   const io = new IntersectionObserver(entries => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
@@ -537,15 +635,15 @@
   setTimeout(() => document.querySelectorAll('.reveal:not(.in)')
     .forEach(el => el.classList.add('in')), 3000);
 
-  /* ---------- animated counters ---------- */
+  /* ============ animated counters ============ */
   const counterIO = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      const el = entry.target, target = +el.dataset.count, suffix = el.dataset.suffix || '';
+      const el = entry.target, targetN = +el.dataset.count, suffix = el.dataset.suffix || '';
       const t0 = performance.now(), dur = 1500;
       const tick = now => {
         const p = Math.min((now - t0) / dur, 1), eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.round(target * eased).toLocaleString() + suffix;
+        el.textContent = Math.round(targetN * eased).toLocaleString() + suffix;
         if (p < 1) requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
@@ -554,7 +652,7 @@
   }, { threshold: .6 });
   document.querySelectorAll('.num[data-count]').forEach(el => counterIO.observe(el));
 
-  /* ---------- 3D tilt + glow on cards ---------- */
+  /* ============ 3D tilt + glow on cards ============ */
   if (!reduced) document.querySelectorAll('.tilt').forEach(card => {
     let raf = null;
     card.addEventListener('pointermove', e => {
@@ -571,12 +669,10 @@
         raf = null;
       });
     });
-    card.addEventListener('pointerleave', () => {
-      card.style.transform = '';
-    });
+    card.addEventListener('pointerleave', () => { card.style.transform = ''; });
   });
 
-  /* ---------- magnetic buttons ---------- */
+  /* ============ magnetic buttons ============ */
   if (!reduced) document.querySelectorAll('.magnetic').forEach(el => {
     el.addEventListener('pointermove', e => {
       const r = el.getBoundingClientRect();
