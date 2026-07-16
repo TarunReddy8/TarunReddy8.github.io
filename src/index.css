@@ -155,6 +155,18 @@ h2 { font-size: clamp(32px, 4.6vw, 50px); letter-spacing: -.035em; line-height: 
         background: rgba(94,234,212,.07); white-space: nowrap; font-weight: 400; }
 .card p { color: var(--muted); font-size: 15px; }
 .card p b { color: var(--text); font-weight: 600; }
+.card .tagline { color: #c8cdef; font-size: 15px; font-weight: 550;
+                 margin-bottom: 14px; letter-spacing: -.01em; }
+
+/* story bullet lists (projects + experience) */
+.points { list-style: none; display: grid; gap: 9px; }
+.points li { position: relative; padding-left: 20px; color: var(--muted);
+             font-size: 14.5px; line-height: 1.5; }
+.points li::before { content: ""; position: absolute; left: 2px; top: 9px;
+                     width: 6px; height: 6px; border-radius: 50%;
+                     background: linear-gradient(120deg, var(--indigo), var(--cyan));
+                     box-shadow: 0 0 8px rgba(103,232,249,.5); }
+.points li b { color: var(--text); font-weight: 600; }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
 .tag { font-family: var(--mono); font-size: 11.5px; color: #c4ccff;
        background: rgba(129,140,248,.1); border: 1px solid rgba(129,140,248,.22);
@@ -186,10 +198,8 @@ h2 { font-size: clamp(32px, 4.6vw, 50px); letter-spacing: -.035em; line-height: 
   border-radius: 50%; background: var(--bg); border: 3px solid var(--indigo);
   box-shadow: 0 0 14px rgba(129,140,248,.5); }
 .titem .when { font-family: var(--mono); font-size: 12.5px; color: var(--mint); }
-.titem h3 { font-size: 20px; margin: 6px 0 4px; letter-spacing: -.015em; }
-.titem .where { color: var(--muted); font-size: 14.5px; margin-bottom: 10px; }
-.titem p { color: var(--muted); font-size: 15px; max-width: 62ch; }
-.titem p b { color: var(--text); font-weight: 600; }
+.titem h3 { font-size: 20px; margin: 6px 0 12px; letter-spacing: -.015em; }
+.titem .points { max-width: 64ch; }
 
 /* ================= contact ================= */
 .contact { text-align: center; padding-bottom: clamp(90px, 14vh, 160px); }

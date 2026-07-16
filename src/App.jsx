@@ -6,34 +6,88 @@ const PROJECTS = [
   {
     name: 'evalsmith', idx: '01',
     url: 'https://github.com/TarunReddy8/evalsmith',
-    blurb: <>CI for LLM quality. Faithfulness, relevance &amp; safety scoring with{' '}
-      <b>regression gates</b> — a prompt change that drops grounding accuracy fails the
-      build, with a per-case HTML report.</>,
+    tagline: 'CI for LLM quality — because you can’t ship what you can’t measure.',
+    points: [
+      <>Scores LLM/RAG output on <b>faithfulness, relevance &amp; safety</b> — LLM-as-judge or
+        offline heuristics.</>,
+      <>Commit a baseline; any prompt or model change that drops quality <b>fails the build</b>.</>,
+      <>Emits a <b>per-case HTML report</b> pinpointing exactly which answers regressed.</>,
+    ],
     tags: ['LLM-as-judge', 'RAG evals', 'regression gates', 'Python'],
   },
   {
     name: 'ClaimSight', idx: '02',
     url: 'https://github.com/TarunReddy8/claimsight',
-    blurb: <>Multi-agent insurance claims processing. LLM extraction with{' '}
-      <b>verified citations</b>, a deterministic 9-rule policy engine, and{' '}
-      <b>hash-chained audit trails</b>. Its narratives are gated by evalsmith in CI.</>,
+    tagline: 'Multi-agent claims processing with an audit trail you can trust.',
+    points: [
+      <>Turns raw claim documents into an <b>audit-ready decision packet</b>.</>,
+      <>LLM extraction with <b>verified citations</b> — hallucinated quotes get caught.</>,
+      <>Deterministic 9-rule policy engine + <b>hash-chained tamper-evident trail</b>.</>,
+      <>Its LLM narratives are <b>gated by evalsmith in CI</b> — the tools reference each other.</>,
+    ],
     tags: ['multi-agent', 'document AI', 'audit trails', 'healthcare'],
   },
   {
     name: 'APSentry', idx: '03',
     url: 'https://github.com/TarunReddy8/apsentry',
-    blurb: <>AP invoice screening: 3-way match plus fraud detectors — duplicates, price
-      outliers via <b>vendor-history z-scores</b>, bank-detail changes. Detector
-      precision/recall <b>backtested and gated at 90% in CI</b>.</>,
+    tagline: 'Invoice fraud screening, with detector quality proven — not assumed.',
+    points: [
+      <><b>3-way match</b>: invoice vs purchase order vs goods receipt.</>,
+      <>Fraud detectors: exact &amp; fuzzy duplicates, <b>price outliers via z-scores</b>,
+        bank-detail changes, threshold gaming.</>,
+      <>Precision/recall <b>measured on a labeled population and gated at 90% in CI</b>.</>,
+    ],
     tags: ['anomaly detection', '3-way match', 'backtesting', 'fintech'],
   },
   {
     name: 'Voxa', idx: '04',
     url: 'https://github.com/TarunReddy8/voxa',
-    blurb: <>A fully local voice AI agent. Energy-VAD listening, whisper STT, streaming
-      reasoning with native tool calls, and <b>sentence-streamed TTS that starts speaking
-      while the model is still thinking</b>. Per-turn latency breakdown built in.</>,
+    tagline: 'A voice AI agent that runs fully local — and answers before it finishes thinking.',
+    points: [
+      <>Energy-based VAD listening, faster-whisper STT, streaming reasoning with native tool
+        calls — <b>zero cloud dependencies</b>.</>,
+      <><b>Sentence-streamed TTS starts speaking while the model is still generating.</b></>,
+      <>Per-turn latency breakdown, AST-safe tool execution, agent loop tested in CI
+        without any hardware.</>,
+    ],
     tags: ['voice AI', 'streaming', 'local-first', 'Ollama · Whisper · Piper'],
+  },
+]
+
+const EXPERIENCE = [
+  {
+    when: 'Jul 2025 — present',
+    role: 'AI/ML Engineer',
+    org: 'Ally Financial',
+    points: [
+      <>Built a <b>RAG knowledge assistant for 2,000+ customer-care agents</b> on Azure OpenAI.</>,
+      <>Shipped the guardrails, eval harness &amp; monitoring that got it past a
+        <b> bank’s model risk office</b>.</>,
+      <>Cut agent handle time <b>14%</b> and LLM spend <b>~35%</b>; hold p95 under
+        <b> 800 ms at 50K requests/day</b>.</>,
+    ],
+  },
+  {
+    when: 'Jan 2024 — Jun 2025',
+    role: 'MS, Data Science',
+    org: 'University at Buffalo, SUNY',
+    points: [
+      <>Moved up the stack — from <b>moving data</b> to <b>reasoning over it</b>.</>,
+      <>Deepened machine learning, LLMs, and data-systems foundations.</>,
+    ],
+  },
+  {
+    when: 'Mar 2021 — Dec 2023',
+    role: 'Data Engineer',
+    org: 'Optum (UnitedHealth Group)',
+    points: [
+      <>PySpark pipelines processing <b>2+ TB/day</b> of medical &amp; pharmacy claims on
+        Databricks.</>,
+      <>Migrated 100+ legacy Hive workloads — <b>60% faster, ~40% cheaper</b>.</>,
+      <>Near-real-time <b>Kafka ingestion</b> and <b>HIPAA-grade PHI controls</b> across
+        Delta Lake &amp; Snowflake.</>,
+      <>Learned what “production” truly costs — the instinct behind every project above.</>,
+    ],
   },
 ]
 
@@ -85,7 +139,7 @@ export default function App() {
         <section className="hero">
           <div className="hero-parallax" ref={heroRef}>
             <div className="hero-float">
-              <p className="hello">$ whoami — Tarun Kumar Reddy Nallagari · Buffalo, NY
+              <p className="hello">$ whoami — Tarun Kumar Reddy Nallagari
                 <span className="cursor">▌</span></p>
               <h1>I build <span className="grad">production AI</span> that actually ships.</h1>
               <p className="sub">AI/ML Engineer at <strong>Ally Financial</strong> — LLM &amp; RAG
@@ -141,7 +195,10 @@ export default function App() {
                   <span className="idx">{project.idx}</span>
                   <h3>{project.name} <span className="arrow">↗</span>{' '}
                     <span className="pill">CI passing</span></h3>
-                  <p>{project.blurb}</p>
+                  <p className="tagline">{project.tagline}</p>
+                  <ul className="points">
+                    {project.points.map((point, j) => <li key={j}>{point}</li>)}
+                  </ul>
                   <div className="tags">
                     {project.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}
                   </div>
@@ -164,29 +221,15 @@ export default function App() {
           <Reveal as="p" className="kicker">experience</Reveal>
           <Reveal as="h2">Where I&apos;ve <span className="grad">shipped.</span></Reveal>
           <div className="timeline">
-            <Reveal className="titem">
-              <span className="when">Jul 2025 — present</span>
-              <h3>AI/ML Engineer · Ally Financial</h3>
-              <div className="where">New York, NY</div>
-              <p>Built a RAG knowledge assistant for <b>2,000+ customer-care agents</b> on Azure
-                OpenAI — guardrails, eval harness, and monitoring that passed a bank&apos;s model
-                risk office. Cut agent handle time <b>14%</b>, LLM spend <b>~35%</b>, and kept p95
-                under <b>800 ms</b> at 50K requests/day.</p>
-            </Reveal>
-            <Reveal className="titem" delay={75}>
-              <span className="when">Jan 2024 — Jun 2025</span>
-              <h3>MS, Data Science · University at Buffalo, SUNY</h3>
-              <div className="where">Buffalo, NY</div>
-              <p>Graduate work in machine learning and data systems.</p>
-            </Reveal>
-            <Reveal className="titem" delay={150}>
-              <span className="when">Mar 2021 — Dec 2023</span>
-              <h3>Data Engineer · Optum (UnitedHealth Group)</h3>
-              <div className="where">Bengaluru, India</div>
-              <p>PySpark pipelines processing <b>2+ TB/day</b> of claims on Databricks; migrated
-                100+ Hive workloads (<b>60% faster, ~40% cheaper</b>); near-real-time Kafka
-                ingestion; HIPAA-grade PHI controls across Delta Lake and Snowflake.</p>
-            </Reveal>
+            {EXPERIENCE.map((job, i) => (
+              <Reveal key={job.org} className="titem" delay={i * 75}>
+                <span className="when">{job.when}</span>
+                <h3>{job.role} · {job.org}</h3>
+                <ul className="points">
+                  {job.points.map((point, j) => <li key={j}>{point}</li>)}
+                </ul>
+              </Reveal>
+            ))}
           </div>
         </section>
 
@@ -209,7 +252,7 @@ export default function App() {
       </main>
 
       <footer>
-        <div>© 2026 Tarun Kumar Reddy Nallagari · Buffalo, NY</div>
+        <div>© 2026 Tarun Kumar Reddy Nallagari</div>
         <div className="mono">React + Three.js · GPU-rendered 3D · no trackers · built for 120 Hz</div>
       </footer>
     </>
