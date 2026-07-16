@@ -6,6 +6,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import { Stars, Float, Sparkles } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
 import * as THREE from 'three'
+import NeuralNet from './NeuralNet.jsx'
 
 const REDUCED = typeof matchMedia !== 'undefined' &&
   matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -76,6 +77,7 @@ export default function Scene() {
         <pointLight position={[-7, -4, 5]} intensity={45} color="#818cf8" />
         <Stars radius={90} depth={60} count={4500} factor={4}
           saturation={0} fade speed={REDUCED ? 0 : 0.5} />
+        <NeuralNet position={isMobile ? [0, -1, -12] : [-3.5, 0, -9]} />
         <Centerpiece position={isMobile ? [0, 2.6, -3] : [3.4, 0.5, 0]} />
         <CameraRig />
         {!REDUCED && (
