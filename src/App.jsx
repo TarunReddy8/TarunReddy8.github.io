@@ -40,17 +40,18 @@ const PROJECTS = [
     tags: ['anomaly detection', '3-way match', 'backtesting', 'fintech'],
   },
   {
-    name: 'Voxa', idx: '04',
-    url: 'https://github.com/TarunReddy8/voxa',
-    tagline: 'A voice AI agent that runs fully local — and answers before it finishes thinking.',
+    name: 'Aria', idx: '04',
+    url: 'https://github.com/TarunReddy8/aria',
+    tagline: 'A personal AI assistant that triages your inbox and talks with you — one app, free to host.',
     points: [
-      <>Energy-based VAD listening, faster-whisper STT, streaming reasoning with native tool
-        calls — <b>zero cloud dependencies</b>.</>,
-      <><b>Sentence-streamed TTS starts speaking while the model is still generating.</b></>,
-      <>Per-turn latency breakdown, AST-safe tool execution, agent loop tested in CI
-        without any hardware.</>,
+      <>Unifies email + notifications, <b>triaged by an LLM</b> (classify · prioritize ·
+        summarize) with a negation-aware offline fallback.</>,
+      <>A <b>chat &amp; voice assistant</b> with safe tools over your inbox — it drafts and
+        summarizes but never sends on its own.</>,
+      <>Browser-native text-to-speech, <b>zero server</b> — shipped as one Streamlit app,
+        free to deploy. Tested fully offline.</>,
     ],
-    tags: ['voice AI', 'streaming', 'local-first', 'Ollama · Whisper · Piper'],
+    tags: ['personal assistant', 'voice + chat', 'LLM triage', 'Streamlit'],
   },
 ]
 
