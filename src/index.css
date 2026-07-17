@@ -153,6 +153,9 @@ h2 { font-size: clamp(32px, 4.6vw, 50px); letter-spacing: -.035em; line-height: 
 .pill { font-family: var(--mono); font-size: 10.5px; padding: 4px 11px; border-radius: 999px;
         border: 1px solid rgba(94,234,212,.35); color: var(--mint);
         background: rgba(94,234,212,.07); white-space: nowrap; font-weight: 400; }
+.pill.demo { cursor: pointer; color: #c7d2fe; border-color: rgba(129,140,248,.5);
+             background: rgba(129,140,248,.12); transition: background .25s, transform .25s; }
+.pill.demo:hover { background: rgba(129,140,248,.28); transform: translateY(-1px); }
 .card p { color: var(--muted); font-size: 15px; }
 .card p b { color: var(--text); font-weight: 600; }
 .card .tagline { color: #c8cdef; font-size: 15px; font-weight: 550;

@@ -42,6 +42,7 @@ const PROJECTS = [
   {
     name: 'Aria', idx: '04',
     url: 'https://github.com/TarunReddy8/aria',
+    demo: 'https://tarunreddy8-aria.streamlit.app',
     tagline: 'A personal AI assistant that triages your inbox and talks with you — one app, free to host.',
     points: [
       <>Unifies email + notifications, <b>triaged by an LLM</b> (classify · prioritize ·
@@ -195,7 +196,16 @@ export default function App() {
                 <TiltCard href={project.url}>
                   <span className="idx">{project.idx}</span>
                   <h3>{project.name} <span className="arrow">↗</span>{' '}
-                    <span className="pill">CI passing</span></h3>
+                    <span className="pill">CI passing</span>
+                    {project.demo && (
+                      <span className="pill demo" role="link" tabIndex={0}
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation();
+                          window.open(project.demo, '_blank', 'noopener'); }}
+                        onKeyDown={(e) => { if (e.key === 'Enter') {
+                          e.preventDefault(); e.stopPropagation();
+                          window.open(project.demo, '_blank', 'noopener'); } }}>
+                        ▶ Live demo</span>
+                    )}</h3>
                   <p className="tagline">{project.tagline}</p>
                   <ul className="points">
                     {project.points.map((point, j) => <li key={j}>{point}</li>)}
