@@ -39,6 +39,19 @@ const PROJECTS = [
     ],
     tags: ['anomaly detection', '3-way match', 'backtesting', 'fintech'],
   },
+  {
+    name: 'DocAI', idx: '04',
+    url: 'https://github.com/TarunReddy8/Doc-AI-Flow',
+    tagline: 'Turns scanned invoices & contracts into structured JSON — OCR → LLM → vector search, full MLOps.',
+    points: [
+      <>OCR (DocTR → Tesseract fallback) → <b>versioned-prompt LLM extraction</b>
+        (OpenAI · Anthropic · Gemini · Groq, or a no-key mock mode).</>,
+      <><b>ChromaDB</b> semantic search + <b>MLflow</b> experiment tracking, with drift
+        detection &amp; prompt A/B testing.</>,
+      <>FastAPI + Streamlit + Prometheus, Dockerized, <b>22 tests in CI/CD</b>.</>,
+    ],
+    tags: ['document AI', 'OCR + LLM', 'MLOps', 'FastAPI · MLflow'],
+  },
 ]
 
 const EXPERIENCE = [
@@ -158,7 +171,7 @@ export default function App() {
           <div className="stats">
             {[
               { value: 4, suffix: '+', label: 'years building ML & data systems' },
-              { value: 3, suffix: '', label: 'open-source projects, all CI-green' },
+              { value: 4, suffix: '', label: 'open-source projects, all CI-green' },
               { value: 2000, suffix: '+', label: 'agents served by my RAG assistant' },
               { value: 70, suffix: '%', label: 'faster incident detection via observability' },
             ].map((stat, i) => (
@@ -173,7 +186,7 @@ export default function App() {
         <section id="work">
           <Reveal as="p" className="kicker">selected work</Reveal>
           <Reveal as="h2">Build → evaluate → <span className="grad">ship.</span></Reveal>
-          <Reveal as="p" className="lede">Three open-source systems — each one solves a real
+          <Reveal as="p" className="lede">Four open-source systems — each one solves a real
             business problem and proves a different discipline.</Reveal>
           <div className="cards">
             {PROJECTS.map((project, i) => (
