@@ -39,21 +39,6 @@ const PROJECTS = [
     ],
     tags: ['anomaly detection', '3-way match', 'backtesting', 'fintech'],
   },
-  {
-    name: 'Aria', idx: '04',
-    url: 'https://github.com/TarunReddy8/aria',
-    demo: 'https://tarunreddy8-aria.streamlit.app',
-    tagline: 'A personal AI assistant that triages your inbox and talks with you — one app, free to host.',
-    points: [
-      <>Unifies email + notifications, <b>triaged by an LLM</b> (classify · prioritize ·
-        summarize) with a negation-aware offline fallback.</>,
-      <>A <b>chat &amp; voice assistant</b> with safe tools over your inbox — it drafts and
-        summarizes but never sends on its own.</>,
-      <>Browser-native text-to-speech, <b>zero server</b> — shipped as one Streamlit app,
-        free to deploy. Tested fully offline.</>,
-    ],
-    tags: ['personal assistant', 'voice + chat', 'LLM triage', 'Streamlit'],
-  },
 ]
 
 const EXPERIENCE = [
@@ -173,7 +158,7 @@ export default function App() {
           <div className="stats">
             {[
               { value: 4, suffix: '+', label: 'years building ML & data systems' },
-              { value: 4, suffix: '', label: 'open-source projects, all CI-green' },
+              { value: 3, suffix: '', label: 'open-source projects, all CI-green' },
               { value: 2000, suffix: '+', label: 'agents served by my RAG assistant' },
               { value: 70, suffix: '%', label: 'faster incident detection via observability' },
             ].map((stat, i) => (
@@ -188,8 +173,8 @@ export default function App() {
         <section id="work">
           <Reveal as="p" className="kicker">selected work</Reveal>
           <Reveal as="h2">Build → evaluate → <span className="grad">ship.</span></Reveal>
-          <Reveal as="p" className="lede">Four open-source systems that work together — each one
-            solves a real business problem and proves a different discipline.</Reveal>
+          <Reveal as="p" className="lede">Three open-source systems — each one solves a real
+            business problem and proves a different discipline.</Reveal>
           <div className="cards">
             {PROJECTS.map((project, i) => (
               <Reveal key={project.name} delay={i * 75}>
