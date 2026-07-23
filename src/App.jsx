@@ -52,6 +52,20 @@ const PROJECTS = [
     ],
     tags: ['document AI', 'OCR + LLM', 'MLOps', 'FastAPI · MLflow'],
   },
+  {
+    name: 'TriageIQ', idx: '05',
+    url: 'https://github.com/TarunReddy8/triageiq',
+    tagline: 'An autonomous support-triage agent you can actually trust in front of customers.',
+    points: [
+      <>Reads a ticket, gathers context with <b>tool-calling</b> (KB search, order lookup),
+        and routes it to auto-resolve / review / escalate.</>,
+      <>Side-effecting actions (refunds) are <b>proposed but never executed — human approval
+        required</b>; bounded tool loop, case memory, PII redaction.</>,
+      <>Labeled-ticket <b>eval harness</b> scoring accuracy, escalation precision/recall &amp;
+        safety — gated in CI.</>,
+    ],
+    tags: ['agentic AI', 'tool-calling', 'guardrails', 'human-in-the-loop'],
+  },
 ]
 
 const EXPERIENCE = [
@@ -171,7 +185,7 @@ export default function App() {
           <div className="stats">
             {[
               { value: 4, suffix: '+', label: 'years building ML & data systems' },
-              { value: 4, suffix: '', label: 'open-source projects, all CI-green' },
+              { value: 5, suffix: '', label: 'open-source projects, all CI-green' },
               { value: 2000, suffix: '+', label: 'agents served by my RAG assistant' },
               { value: 70, suffix: '%', label: 'faster incident detection via observability' },
             ].map((stat, i) => (
@@ -186,7 +200,7 @@ export default function App() {
         <section id="work">
           <Reveal as="p" className="kicker">selected work</Reveal>
           <Reveal as="h2">Build → evaluate → <span className="grad">ship.</span></Reveal>
-          <Reveal as="p" className="lede">Four open-source systems — each one solves a real
+          <Reveal as="p" className="lede">Five open-source systems — each one solves a real
             business problem and proves a different discipline.</Reveal>
           <div className="cards">
             {PROJECTS.map((project, i) => (
