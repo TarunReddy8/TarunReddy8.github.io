@@ -16,39 +16,44 @@ const PROJECTS = [
     tags: ['LLM-as-judge', 'RAG evals', 'regression gates', 'Python'],
   },
   {
-    name: 'ClaimSight', idx: '02',
-    url: 'https://github.com/TarunReddy8/claimsight',
-    tagline: 'Multi-agent claims processing with an audit trail you can trust.',
+    name: 'edgar-iq', idx: '02',
+    url: 'https://github.com/TarunReddy8/edgar-iq',
+    tagline: 'Financial-filing intelligence over real SEC EDGAR data.',
     points: [
-      <>Turns raw claim documents into an <b>audit-ready decision packet</b>.</>,
-      <>LLM extraction with <b>verified citations</b> — hallucinated quotes get caught.</>,
-      <>Deterministic 9-rule policy engine + <b>hash-chained tamper-evident trail</b>.</>,
-      <>Its LLM narratives are <b>gated by evalsmith in CI</b> — the tools reference each other.</>,
+      <>Pulls a company’s <b>real XBRL financials</b> straight from SEC EDGAR (free, no key) —
+        revenue, income, leverage &amp; EPS with year-over-year moves.</>,
+      <>Deterministic <b>red-flag signals</b> (revenue decline, net loss, thin liquidity, high
+        leverage) grounded in the actual filed numbers.</>,
+      <>The LLM writes the risk narrative but <b>never invents numbers</b>; offline fallback,
+        tests assert on Apple’s &amp; Intel’s real figures.</>,
     ],
-    tags: ['multi-agent', 'document AI', 'audit trails', 'healthcare'],
+    tags: ['real SEC data', 'financial NLP', 'provider-agnostic LLM', 'Python'],
   },
   {
-    name: 'APSentry', idx: '03',
-    url: 'https://github.com/TarunReddy8/apsentry',
-    tagline: 'Invoice fraud screening, with detector quality proven — not assumed.',
+    name: 'fda-signal', idx: '03',
+    url: 'https://github.com/TarunReddy8/fda-signal',
+    tagline: 'Drug safety-signal detection on real FDA adverse-event data.',
     points: [
-      <><b>3-way match</b>: invoice vs purchase order vs goods receipt.</>,
-      <>Fraud detectors: exact &amp; fuzzy duplicates, <b>price outliers via z-scores</b>,
-        bank-detail changes, threshold gaming.</>,
-      <>Precision/recall <b>measured on a labeled population and gated at 90% in CI</b>.</>,
+      <>Runs the same <b>disproportionality analysis (PRR / ROR / chi-square)</b> regulators use,
+        on <b>real openFDA FAERS</b> reports (free, no key).</>,
+      <>Rediscovers known risks from raw counts — e.g. metformin → <b>lactic acidosis, PRR 80.9</b> —
+        using standard MHRA signalling thresholds.</>,
+      <>Statistics computed before any LLM call; runs offline against committed real fixtures,
+        <b>14 tests</b> asserting on the real values.</>,
     ],
-    tags: ['anomaly detection', '3-way match', 'backtesting', 'fintech'],
+    tags: ['pharmacovigilance', 'real FDA data', 'anomaly detection', 'healthcare'],
   },
   {
     name: 'DocAI', idx: '04',
     url: 'https://github.com/TarunReddy8/Doc-AI-Flow',
-    tagline: 'Turns scanned invoices & contracts into structured JSON — OCR → LLM → vector search, full MLOps.',
+    tagline: 'Turns scanned receipts & documents into structured JSON — OCR → LLM → vector search, full MLOps.',
     points: [
       <>OCR (DocTR → Tesseract fallback) → <b>versioned-prompt LLM extraction</b>
         (OpenAI · Anthropic · Gemini · Groq, or a no-key mock mode).</>,
       <><b>ChromaDB</b> semantic search + <b>MLflow</b> experiment tracking, with drift
         detection &amp; prompt A/B testing.</>,
-      <>FastAPI + Streamlit + Prometheus, Dockerized, <b>22 tests in CI/CD</b>.</>,
+      <>Extraction accuracy measured on <b>real CORD receipts</b> — FastAPI + Streamlit +
+        Prometheus, Dockerized, <b>28 tests in CI/CD</b>.</>,
     ],
     tags: ['document AI', 'OCR + LLM', 'MLOps', 'FastAPI · MLflow'],
   },
