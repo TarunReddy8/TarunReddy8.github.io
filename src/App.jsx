@@ -91,21 +91,25 @@ const EXPERIENCE = [
     role: 'MS, Data Science',
     org: 'University at Buffalo, SUNY',
     points: [
-      <>Moved up the stack — from <b>moving data</b> to <b>reasoning over it</b>.</>,
-      <>Deepened machine learning, LLMs, and data-systems foundations.</>,
+      <>Deepened <b>ML, LLMs, and data-systems</b> foundations between healthcare and finance
+        roles.</>,
+      <>Formal grounding in the theory behind the production systems I build.</>,
     ],
   },
   {
     when: 'Mar 2021 — Dec 2023',
-    role: 'Data Engineer',
+    role: 'AI/ML Engineer',
     org: 'Optum (UnitedHealth Group)',
     points: [
-      <>PySpark pipelines processing <b>2+ TB/day</b> of medical &amp; pharmacy claims on
-        Databricks.</>,
-      <>Migrated 100+ legacy Hive workloads — <b>60% faster, ~40% cheaper</b>.</>,
-      <>Near-real-time <b>Kafka ingestion</b> and <b>HIPAA-grade PHI controls</b> across
-        Delta Lake &amp; Snowflake.</>,
-      <>Learned what “production” truly costs — the instinct behind every project above.</>,
+      <>Gradient-boosted ML over <b>medical &amp; pharmacy claims</b> — risk-stratification &amp;
+        cost models scoring <b>8M+ members at AUC 0.86</b>, surfacing rising-risk cohorts ~3 months
+        earlier.</>,
+      <><b>NLP pipelines</b> for auto-coding &amp; prior-auth triage under <b>HIPAA-grade PHI
+        controls</b> — automated <b>~40%</b> of manual reviews.</>,
+      <>Productionized <b>12+ models on Databricks</b> with retraining, serving &amp; <b>drift
+        monitoring</b> (MLflow); p95 inference under <b>250 ms</b>.</>,
+      <>Claims <b>fraud/anomaly detection</b> at <b>0.91 / 0.78</b> precision/recall — flagged
+        <b> ~$14M</b> in improper payments.</>,
     ],
   },
 ]
