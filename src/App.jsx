@@ -101,15 +101,15 @@ const EXPERIENCE = [
     role: 'AI/ML Engineer',
     org: 'Optum (UnitedHealth Group)',
     points: [
-      <>Gradient-boosted ML over <b>medical &amp; pharmacy claims</b> — risk-stratification &amp;
-        cost models scoring <b>8M+ members at AUC 0.86</b>, surfacing rising-risk cohorts ~3 months
-        earlier.</>,
-      <><b>NLP pipelines</b> for auto-coding &amp; prior-auth triage under <b>HIPAA-grade PHI
-        controls</b> — automated <b>~40%</b> of manual reviews.</>,
-      <>Productionized <b>12+ models on Databricks</b> with retraining, serving &amp; <b>drift
-        monitoring</b> (MLflow); p95 inference under <b>250 ms</b>.</>,
-      <>Claims <b>fraud/anomaly detection</b> at <b>0.91 / 0.78</b> precision/recall — flagged
-        <b> ~$14M</b> in improper payments.</>,
+      <>Risk-stratification &amp; <b>30-day readmission</b> platform over <b>8M+ members / 1B+
+        claims</b> at <b>AUC 0.86</b> — cut avoidable admissions ~12%, saved <b>~$30M/yr</b> in
+        medical cost.</>,
+      <><b>ClinicalBERT</b> NLP surfacing undocumented <b>HCC codes</b> — recovered <b>~$18M</b> in
+        appropriate reimbursement, cut chart review ~40% (under HIPAA-grade PHI controls).</>,
+      <><b>Fraud/waste/abuse detection</b> (gradient-boosted + graph) at <b>0.91 / 0.78</b>
+        precision/recall — flagged <b>~$14M</b> in improper payments.</>,
+      <>MLOps platform on Databricks (MLflow, drift monitoring) running <b>12+ models</b> at p95
+        &lt; 250 ms, plus a <b>fairness/bias-audit gate</b> aligned to the <b>NIST AI RMF</b>.</>,
     ],
   },
 ]
